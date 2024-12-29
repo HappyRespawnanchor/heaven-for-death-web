@@ -1,0 +1,6 @@
+[
+null,
+{"id":1,"battlerName":"","characterIndex":0,"characterName":"SF_Actor1","classId":5,"equips":[1,1,2,3,0],"faceIndex":0,"faceName":"Actor2","traits":[],"initialLevel":1,"maxLevel":99,"name":"凉","nickname":"","note":"","profile":"逃避追债自杀而死的人类"},
+{"id":2,"battlerName":"Actor1_8","characterIndex":1,"characterName":"SF_Damage2","classId":2,"equips":[2,1,2,3,0],"faceIndex":1,"faceName":"Actor3","traits":[],"initialLevel":99,"maxLevel":99,"name":"伊地知虹夏","nickname":"“下北泽”","note":"","profile":"路过的天使"},
+{"id":3,"battlerName":"","characterIndex":1,"characterName":"SF_Damage3","classId":5,"equips":[0,0,0,0,0],"faceIndex":1,"faceName":"Actor3","traits":[],"initialLevel":1,"maxLevel":99,"name":"伊地知虹夏","nickname":"","note":"","profile":""}
+]

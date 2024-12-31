@@ -6543,10 +6543,7 @@ WebAudio.initialize = function(noAudio) {
  * @return {Boolean} True if the browser can play ogg files
  */
 WebAudio.canPlayOgg = function() {
-    if (!this._initialized) {
-        this.initialize();
-    }
-    return !!this._canPlayOgg;
+    return false;
 };
 
 /**
@@ -6588,7 +6585,7 @@ WebAudio._createContext = function() {
 WebAudio._detectCodecs = function() {
     var audio = document.createElement('audio');
     if (audio.canPlayType) {
-        this._canPlayOgg = audio.canPlayType('audio/ogg');
+        this._canPlayOgg = false;
         this._canPlayM4a = audio.canPlayType('audio/mp4');
     }
 };

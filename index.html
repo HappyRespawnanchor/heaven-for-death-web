@@ -134,51 +134,7 @@
             audio.play();
         }
 
-        /**
-         * 键盘事件监听器，处理 Escape 键逻辑
-         */
-        document.addEventListener('keydown', (event) => {
-            if (event.key === 'Escape' && !userRequestedExit) {
-                event.preventDefault();
-                event.stopPropagation();
-
-                // 模拟一个 Escape 键按下事件，让游戏响应
-                const simulatedEvent = new KeyboardEvent('keydown', {
-                    key: 'Escape',
-                    code: 'Escape',
-                    keyCode: 27, // 对于某些浏览器的兼容性
-                    bubbles: true,
-                    cancelable: true,
-                });
-                document.dispatchEvent(simulatedEvent); // 触发事件
-
-                handleEscapeKey(); // 处理全屏模式切换逻辑
-            }
-        });
-
-        /**
-         * 监听全屏状态变化
-         */
-        document.addEventListener('fullscreenchange', () => {
-            if (!document.fullscreenElement && !userRequestedExit) {
-                if (currentFullscreenMode === 'fullscreen') {
-                    toggleFullscreen();
-                } else if (currentFullscreenMode === 'gamecanvas') {
-                    toggleGameCavasFullscreen();
-                }
-            }
-        });
-
-        /**
-         * 处理 Escape 键逻辑
-         */
-        function handleEscapeKey() {
-            if (currentFullscreenMode === 'gamecanvas') {
-                toggleGameCavasFullscreen();
-            } else if (currentFullscreenMode === 'fullscreen') {
-                toggleFullscreen();
-            }
-        }
+        
 
         /**
          * 切换游戏画布全屏

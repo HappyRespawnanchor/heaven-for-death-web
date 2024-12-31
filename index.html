@@ -28,12 +28,6 @@
             overflow: hidden;
         }
 
-        /* 在 fullscreen-gamecanvas 模式下隐藏所有按钮和链接 */
-        body.fullscreen-gamecanvas button,
-        body.fullscreen-gamecanvas .top-right-links {
-            display: none !important;
-        }
-
         /* 顶部右侧链接的样式 */
         .top-right-links {
             position: fixed;
@@ -108,7 +102,13 @@
             background: rgb(92, 139, 125);
         }
 
-        /* 模糊背景样式 */
+        /* 在游戏画布全屏模式下隐藏按钮 */
+        body.fullscreen-gamecanvas .fullscreen-gamecanvas-button,
+        body.fullscreen-gamecanvas .fullscreen-button,
+        body.fullscreen-gamecanvas .top-right-links {
+            display: none;
+        }
+
         .blurred-background {
             position: fixed;
             bottom: 0;
@@ -172,51 +172,55 @@
             toggleFullscreenCore(root, 'fullscreen');
         }
 
-function toggleFullscreenCore(element, mode) {
-    const body = document.body;
+        /**
+         * 核心全屏切换逻辑
+         * @param {HTMLElement} element - 要全屏的元素
+         * @param {string} mode - 模式 ('fullscreen' 或 'gamecanvas')
+         */
+        function toggleFullscreenCore(element, mode) {
+            const body = document.body;
 
-    if (!document.fullscreenElement) {
-        userRequestedExit = false;
-        currentFullscreenMode = mode;
+            if (!document.fullscreenElement) {
+                userRequestedExit = false;
+                currentFullscreenMode = mode;
 
-        // 根据模式设置 body 的类名
-        if (mode === 'gamecanvas') {
-            body.classList.add('fullscreen-gamecanvas');
-        } else {
-            body.classList.remove('fullscreen-gamecanvas');
+                // 根据模式设置 body 的类名
+                if (mode === 'gamecanvas') {
+                    body.classList.add('fullscreen-gamecanvas');
+                } else {
+                    body.classList.remove('fullscreen-gamecanvas');
+                }
+
+                if (element.requestFullscreen) {
+                    element.requestFullscreen();
+                } else if (element.webkitRequestFullscreen) {
+                    element.webkitRequestFullscreen();
+                } else if (element.msRequestFullscreen) {
+                    element.msRequestFullscreen();
+                }
+            } else {
+                userRequestedExit = true;
+                currentFullscreenMode = null;
+
+                // 移除所有全屏相关类名
+                body.classList.remove('fullscreen-gamecanvas');
+
+                if (document.exitFullscreen) {
+                    document.exitFullscreen();
+                } else if (document.webkitExitFullscreen) {
+                    document.webkitExitFullscreen();
+                } else if (document.msExitFullscreen) {
+                    document.msExitFullscreen();
+                }
+            }
         }
 
-        if (element.requestFullscreen) {
-            element.requestFullscreen();
-        } else if (element.webkitRequestFullscreen) {
-            element.webkitRequestFullscreen();
-        } else if (element.msRequestFullscreen) {
-            element.msRequestFullscreen();
-        }
-    } else {
-        userRequestedExit = true;
-        currentFullscreenMode = null;
-
-        // 移除所有全屏相关类名
-        body.classList.remove('fullscreen-gamecanvas');
-
-        if (document.exitFullscreen) {
-            document.exitFullscreen();
-        } else if (document.webkitExitFullscreen) {
-            document.webkitExitFullscreen();
-        } else if (document.msExitFullscreen) {
-            document.msExitFullscreen();
-        }
-    }
-}
-
-// 添加事件监听器，确保退出全屏时清除类名
-document.addEventListener("fullscreenchange", () => {
-    if (!document.fullscreenElement) {
-        document.body.classList.remove("fullscreen-gamecanvas");
-    }
-});
-        }
+        // 添加事件监听器，确保退出全屏时清除类名
+        document.addEventListener("fullscreenchange", () => {
+            if (!document.fullscreenElement) {
+                document.body.classList.remove("fullscreen-gamecanvas");
+            }
+        });
     </script>
 
     <!-- 外部脚本文件的引用 -->

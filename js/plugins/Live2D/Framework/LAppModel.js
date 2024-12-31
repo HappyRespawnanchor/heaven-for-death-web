@@ -433,11 +433,7 @@ LAppModel.prototype.setExpression = function(name)
 }
 
 LAppModel.prototype.audioFileExt = function() {
-    if (WebAudio.canPlayOgg() && !Utils.isMobileDevice()) {
-        return '.ogg';
-    } else {
-        return '.m4a';
-    }
+    return '.m4a';
 };
 
 LAppModel.prototype.draw = function(gl)

@@ -28,6 +28,12 @@
             overflow: hidden;
         }
 
+        /* 在 fullscreen-gamecanvas 模式下隐藏所有按钮和链接 */
+        body.fullscreen-gamecanvas button,
+        body.fullscreen-gamecanvas .top-right-links {
+            display: none !important;
+        }
+
         /* 顶部右侧链接的样式 */
         .top-right-links {
             position: fixed;
@@ -102,12 +108,13 @@
             background: rgb(92, 139, 125);
         }
 
+        /* 模糊背景样式 */
         .blurred-background {
             position: fixed;
             bottom: 0;
             left: 0;
             width: 100%;
-            height: 100vh;  /* 设置为视口高度，确保背景完全覆盖屏幕 */
+            height: 100vh; /* 设置为视口高度，确保背景完全覆盖屏幕 */
             background: url('./img/pictures/CG23.png') no-repeat center center;
             background-size: cover;
             filter: blur(10px);
@@ -149,8 +156,6 @@
             audio.play();
         }
 
-
-
         /**
          * 切换游戏画布全屏
          */
@@ -173,9 +178,19 @@
          * @param {string} mode - 模式 ('fullscreen' 或 'gamecanvas')
          */
         function toggleFullscreenCore(element, mode) {
+            const body = document.body;
+
             if (!document.fullscreenElement) {
                 userRequestedExit = false;
                 currentFullscreenMode = mode;
+
+                // 根据模式设置 body 的类名
+                if (mode === 'gamecanvas') {
+                    body.classList.add('fullscreen-gamecanvas');
+                } else {
+                    body.classList.remove('fullscreen-gamecanvas');
+                }
+
                 if (element.requestFullscreen) {
                     element.requestFullscreen();
                 } else if (element.webkitRequestFullscreen) {
@@ -186,6 +201,10 @@
             } else {
                 userRequestedExit = true;
                 currentFullscreenMode = null;
+
+                // 移除所有全屏相关类名
+                body.classList.remove('fullscreen-gamecanvas');
+
                 if (document.exitFullscreen) {
                     document.exitFullscreen();
                 } else if (document.webkitExitFullscreen) {
@@ -196,8 +215,6 @@
             }
         }
     </script>
-
-
 
     <!-- 外部脚本文件的引用 -->
     <script type="text/javascript" src="js/libs/pixi.js"></script>

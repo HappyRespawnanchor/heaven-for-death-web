@@ -86,6 +86,45 @@
                 text-decoration: underline;
             }
         }
+
+        .note {
+            border-left: 4px solid #1e6eeb;
+            /* 左侧黄色边框 */
+            background-color: #fdf6e3;
+            /* 浅黄色背景 */
+            padding: 10px;
+            /* 内边距 */
+            margin: 20px 0;
+            /* 上下间距 */
+            border-radius: 5px;
+            /* 圆角 */
+            font-family: Arial, sans-serif;
+            color: #333;
+            /* 文字颜色 */
+        }
+
+        .note h3 {
+            margin-top: 0;
+            /* 移除顶部间距 */
+            color: #4492f8;
+            /* 黄色标题颜色 */
+        }
+
+        @media (prefers-color-scheme: dark) {
+            .note {
+                border-left: 4px solid #76baff;
+                /* 左侧边框颜色 */
+                background-color: #2f2f2f;
+                /* 深色背景 */
+                color: #ccc;
+                /* 浅色文字 */
+            }
+
+            .note h3 {
+                color: #76baff;
+                /* 标题颜色 */
+            }
+        }
     </style>
 </head>
 
@@ -93,8 +132,15 @@
     <div class="container">
         <h1>游玩前请先阅读</h1>
 
+        <!-- 注意部分 -->
+        <div class="note">
+            <h3>🛈 信息</h3>
+            <p>非官方项目，旨在提升网页端的游玩和使用体验，并将音频格式转换为 m4a，以适配部分移动端浏览器。</p>
+        </div>
+        
         <h2>☼ 作品名</h2>
         <p>Heaven For Death</p>
+
 
         <h2>☼ 制作</h2>
         <ul>

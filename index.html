@@ -3,24 +3,15 @@
 
 <head>
     <meta charset="UTF-8">
-    <!-- 指定网页的字符集为 UTF-8，确保能够正确显示所有语言文字 -->
     <meta name="apple-mobile-web-app-capable" content="yes">
-    <!-- 允许网页以全屏模式运行在 iOS 的 Safari 浏览器中 -->
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <!-- 设置状态栏为黑色透明样式 -->
     <meta name="viewport" content="user-scalable=no">
-    <!-- 禁用用户缩放网页 -->
     <link rel="icon" href="icon/icon.png" type="image/png">
-    <!-- 设置网页的 favicon -->
     <link rel="apple-touch-icon" href="icon/icon.png">
-    <!-- 为苹果设备添加主屏图标 -->
     <link rel="stylesheet" type="text/css" href="fonts/gamefont.css">
-    <!-- 引入自定义字体样式 -->
     <title>Heaven For Death</title>
-    <!-- 定义网页标题 -->
 
     <style>
-        /* 基础布局设置 */
         body {
             background-color: black;
             margin: 0;
@@ -28,20 +19,17 @@
             overflow: hidden;
         }
 
-        /* 顶部右侧链接区域样式 */
         .top-right-links {
             position: fixed;
             top: 10px;
             right: 10px;
             z-index: 1000;
-            text-align: right;
             display: flex;
             flex-direction: column;
             gap: 5px;
             align-items: flex-end;
         }
 
-        /* 链接按钮的基本样式 */
         .top-right-links a {
             color: white;
             text-decoration: none;
@@ -53,70 +41,26 @@
             transition: background 0.3s;
         }
 
-        /* 鼠标悬停时的高亮效果 */
         .top-right-links a:hover {
             background: rgba(92, 139, 125, 0.75);
         }
 
-        /* 特殊链接额外间距 */
-        .top-right-links a.special-gap {
-            margin-top: 3px;
-        }
-
-        /* 全屏切换按钮的基本样式 */
-        .fullscreen-gamecanvas-button,
-        .fullscreen-button {
-            position: fixed;
-            z-index: 1000;
-            width: 40px;
-            height: 40px;
-            color: white;
-            font-family: Arial, sans-serif;
-            font-size: 25px;
-            background: rgba(255, 255, 255, 0.2);
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 2px;
-            transition: background 0.3s;
-        }
-
-        /* 按钮位置设置 */
-        .fullscreen-button {
-            bottom: 10px;
-            right: 10px;
-        }
-
-        /* 鼠标悬停时按钮高亮 */
-        .fullscreen-button:hover,
-        .fullscreen-gamecanvas-button:hover {
-            background: rgb(92, 139, 125);
-        }
-
-        /* 游戏画布样式 */
         #GameCanvas {
             width: 100%;
             height: 100%;
-            border-radius: 15px; /* 普通模式的圆角 */
+            border-radius: 15px;
             overflow: hidden;
         }
 
-        /* 全屏模式下移除圆角 */
         body.fullscreen-gamecanvas #GameCanvas {
             border-radius: 0;
         }
 
-        /* 全屏模式下隐藏按钮和链接 */
         body.fullscreen-gamecanvas .fullscreen-button,
-        body.fullscreen-gamecanvas .fullscreen-gamecanvas-button,
         body.fullscreen-gamecanvas .top-right-links {
             display: none;
         }
 
-        /* 模糊背景效果 */
         .blurred-background {
             position: fixed;
             bottom: 0;
@@ -135,7 +79,7 @@
 
 <body>
     <div class="blurred-background"></div>
-    <!-- 顶部右侧链接区域 -->
+
     <div class="top-right-links">
         <a href="https://weibo.com/5590907459/MmROukpWC" target="_blank" onclick="playClickSound()">官方发布页</a>
         <a href="https://github.com/HappyRespawnanchor/heaven-for-death-web" target="_blank" onclick="playClickSound()">网页版仓库</a>
@@ -143,89 +87,41 @@
         <a href="./请在得到密码并通关后解压.zip" download onclick="playClickSound()">请在得到密码并通关后解压.zip</a>
     </div>
 
-    <!-- 全屏切换按钮 -->
-    <button class="fullscreen-button" onclick="playClickSound(); toggleFullscreen()">⛶</button>
+    <button class="fullscreen-button" onclick="toggleFullscreen()">⛶</button>
 
-    <!-- 音效文件 -->
     <audio id="clickSound" src="./audio/se/Cursor2.m4a" preload="auto"></audio>
 
-    <!-- 游戏画布 -->
     <canvas id="GameCanvas"></canvas>
 
     <script>
-        let userRequestedExit = false; // 用户是否主动退出全屏
-        let currentFullscreenMode = null; // 当前全屏模式 ('fullscreen' 或 'gamecanvas')
+        let userRequestedExit = false;
 
-        /**
-         * 播放点击音效
-         */
         function playClickSound() {
             const audio = document.getElementById('clickSound');
             audio.currentTime = 0;
             audio.play();
         }
 
-        /**
-         * 切换游戏画布全屏
-         */
-        function toggleGameCanvasFullscreen() {
-            const canvas = document.getElementById('GameCanvas');
-            toggleFullscreenCore(canvas, 'gamecanvas');
-        }
-
-        /**
-         * 切换普通全屏
-         */
         function toggleFullscreen() {
             const root = document.documentElement;
-            toggleFullscreenCore(root, 'fullscreen');
-        }
-
-        /**
-         * 核心全屏切换逻辑
-         */
-        function toggleFullscreenCore(element, mode) {
             const body = document.body;
             if (!document.fullscreenElement) {
                 userRequestedExit = false;
-                currentFullscreenMode = mode;
-
-                // 设置样式
-                if (mode === 'gamecanvas') {
-                    body.classList.add('fullscreen-gamecanvas');
-                } else {
-                    body.classList.remove('fullscreen-gamecanvas');
-                }
-
-                // 请求全屏
-                element.requestFullscreen?.() ||
-                    element.webkitRequestFullscreen?.() ||
-                    element.msRequestFullscreen?.();
+                body.classList.add('fullscreen-gamecanvas');
+                root.requestFullscreen?.();
             } else {
                 userRequestedExit = true;
                 body.classList.remove('fullscreen-gamecanvas');
-                currentFullscreenMode = null;
-
-                // 退出全屏
-                document.exitFullscreen?.() ||
-                    document.webkitExitFullscreen?.() ||
-                    document.msExitFullscreen?.();
+                document.exitFullscreen?.();
             }
         }
 
-        /**
-         * 全屏状态变化事件监听
-         */
         document.addEventListener('fullscreenchange', () => {
             if (!document.fullscreenElement && !userRequestedExit) {
                 document.body.classList.remove('fullscreen-gamecanvas');
-                currentFullscreenMode = null;
             }
         });
 
-        /**
-         * 捕获 ESC 键退出事件
-         */
         window.addEventListener('keydown', (event) => {
             if (event.key === 'Escape' && document.fullscreenElement) {
                 userRequestedExit = true;
@@ -233,7 +129,6 @@
         });
     </script>
 
-    <!-- 外部脚本文件 -->
     <script src="js/libs/pixi.js"></script>
     <script src="js/libs/fpsmeter.js"></script>
     <script src="js/libs/lz-string.js"></script>

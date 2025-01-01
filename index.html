@@ -64,7 +64,6 @@
         }
 
         /* 全屏切换按钮的基本样式 */
-        .fullscreen-gamecanvas-button,
         .fullscreen-button {
             position: fixed;
             z-index: 1000;
@@ -104,18 +103,6 @@
             overflow: hidden;
         }
 
-        /* 全屏模式下移除圆角 */
-        body.fullscreen-gamecanvas #GameCanvas {
-            border-radius: 0;
-        }
-
-        /* 全屏模式下隐藏按钮和链接 */
-        body.fullscreen-gamecanvas .fullscreen-button,
-        body.fullscreen-gamecanvas .fullscreen-gamecanvas-button,
-        body.fullscreen-gamecanvas .top-right-links {
-            display: none;
-        }
-
         /* 模糊背景效果 */
         .blurred-background {
             position: fixed;
@@ -153,9 +140,7 @@
     <canvas id="GameCanvas"></canvas>
 
     <script>
-        let userRequestedExit = false; // 用户是否主动退出全屏
-        let currentFullscreenMode = null; // 当前全屏模式 ('fullscreen' 或 'gamecanvas')
-
+        
         /**
          * 播放点击音效
          */
@@ -163,14 +148,6 @@
             const audio = document.getElementById('clickSound');
             audio.currentTime = 0;
             audio.play();
-        }
-
-        /**
-         * 切换游戏画布全屏
-         */
-        function toggleGameCanvasFullscreen() {
-            const canvas = document.getElementById('GameCanvas');
-            toggleFullscreenCore(canvas, 'gamecanvas');
         }
 
         /**
@@ -187,24 +164,11 @@
         function toggleFullscreenCore(element, mode) {
             const body = document.body;
             if (!document.fullscreenElement) {
-                userRequestedExit = false;
-                currentFullscreenMode = mode;
-
-                // 设置样式
-                if (mode === 'gamecanvas') {
-                    body.classList.add('fullscreen-gamecanvas');
-                } else {
-                    body.classList.remove('fullscreen-gamecanvas');
-                }
-
                 // 请求全屏
                 element.requestFullscreen?.() ||
                     element.webkitRequestFullscreen?.() ||
                     element.msRequestFullscreen?.();
-            } else {
-                userRequestedExit = true;
-                body.classList.remove('fullscreen-gamecanvas');
-                currentFullscreenMode = null;
+            }
 
                 // 退出全屏
                 document.exitFullscreen?.() ||
@@ -212,25 +176,6 @@
                     document.msExitFullscreen?.();
             }
         }
-
-        /**
-         * 全屏状态变化事件监听
-         */
-        document.addEventListener('fullscreenchange', () => {
-            if (!document.fullscreenElement && !userRequestedExit) {
-                document.body.classList.remove('fullscreen-gamecanvas');
-                currentFullscreenMode = null;
-            }
-        });
-
-        /**
-         * 捕获 ESC 键退出事件
-         */
-        window.addEventListener('keydown', (event) => {
-            if (event.key === 'Escape' && document.fullscreenElement) {
-                userRequestedExit = true;
-            }
-        });
     </script>
 
     <!-- 外部脚本文件 -->
